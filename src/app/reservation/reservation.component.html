@@ -1,0 +1,22 @@
+<h2>Agendar Reserva</h2>
+
+<form (ngSubmit)="onSubmit()">
+  <label>Data:</label>
+  <input type="date" name="data" required />
+
+  <label>Hora Início:</label>
+  <input type="time"  name="inicio" required />
+
+  <label>Hora Fim:</label>
+  <input type="time"  name="fim" required />
+
+  <label>Sala ID:</label>
+  <input type="number"  name="sala" required />
+
+  <label>Usuário ID:</label>
+  <input type="number"  name="usuario" required />
+
+  <button type="submit">Agendar</button>
+</form>
+
+
