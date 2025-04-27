@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
-import { ReservationComponent } from "./reservation/reservation.component";
+import {Component} from '@angular/core';
+import {Router, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ReservationComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'tananam';
+
+  constructor(private router: Router) {
+  }
+
+  navigateToReservation() {
+    this.router.navigate(['/reservation']);
+  }
 }
