@@ -7,22 +7,22 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-room-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './room-registration.component.html',
   styleUrl: './room-registration.component.css'
 })
 export class RoomRegistrationComponent implements OnInit {
   roomForm: FormGroup;
-  isEditMode: boolean = false;
+  isEditMode = false;
   roomId: number | null = null;
-  errorMessage: string = '';
-  successMessage: string = '';
-  isSubmitting: boolean = false;
+  errorMessage = '';
+  successMessage = '';
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private roomService: RoomService,
-    public router: Router,
+    private router: Router,
     private route: ActivatedRoute
   ) {
     this.roomForm = this.formBuilder.group({
@@ -37,67 +37,64 @@ export class RoomRegistrationComponent implements OnInit {
       if (params['id']) {
         this.isEditMode = true;
         this.roomId = +params['id'];
+        this.loadRoomData();
+      }
+    });
+  }
+
+  loadRoomData(): void {
+    this.isLoading = true;
+    this.roomService.getRooms().subscribe({
+      next: (rooms) => {
+        const room = rooms.find(r => r.id === this.roomId);
+        if (room) {
+          this.roomForm.patchValue({
+            name: room.name,
+            capacity: room.capacity.toString(),
+            location: room.location
+          });
+        } else {
+          this.errorMessage = 'Sala não encontrada';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Erro ao carregar dados da sala';
+        this.isLoading = false;
       }
     });
   }
 
   onSubmit(): void {
-    if (this.isSubmitting) return;
+    if (this.isLoading || this.roomForm.invalid) return;
     
     this.errorMessage = '';
     this.successMessage = '';
-    this.isSubmitting = true;
+    this.isLoading = true;
     
-    if (this.roomForm.valid) {
-      const roomData: RoomRequest = {
-        id: this.isEditMode && this.roomId ? this.roomId.toString() : '0',
-        name: this.roomForm.get('name')?.value,
-        capacity: this.roomForm.get('capacity')?.value,
-        location: this.roomForm.get('location')?.value
-      };
-      
-      const observable = this.isEditMode && this.roomId
-        ? this.roomService.update(this.roomId, roomData)
-        : this.roomService.create(roomData);
+    const formValue = this.roomForm.value;
+    const roomData: RoomRequest = {
+      id: this.isEditMode ? this.roomId!.toString() : '0',
+      name: formValue.name,
+      capacity: formValue.capacity.toString(),
+      location: formValue.location
+    };
 
-      observable.subscribe({
-        next: () => {
-          this.successMessage = this.isEditMode 
-            ? 'Sala atualizada com sucesso!' 
-            : 'Sala cadastrada com sucesso!';
-          setTimeout(() => {
-            this.router.navigate(['/rooms']);
-          }, 2000);
-        },
-        error: (error) => {
-          this.handleError(error);
-          this.isSubmitting = false;
-        },
-        complete: () => {
-          this.isSubmitting = false;
-        }
-      });
-    } else {
-      this.isSubmitting = false;
-      this.markFormGroupTouched(this.roomForm);
-    }
-  }
+    const request = this.isEditMode
+      ? this.roomService.update(this.roomId!, roomData)
+      : this.roomService.create(roomData);
 
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
+    request.subscribe({
+      next: () => {
+        this.successMessage = this.isEditMode ? 'Sala atualizada!' : 'Sala cadastrada!';
+        this.isLoading = false;
+        setTimeout(() => this.router.navigate(['/rooms']), 2000);
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Erro ao processar solicitação';
+        this.isLoading = false;
       }
     });
-  }
-
-  private handleError(error: any): void {
-    if (error.error?.error) {
-      this.errorMessage = error.error.error;
-    } else {
-      this.errorMessage = 'Ocorreu um erro ao processar sua solicitação.';
-    }
   }
 
   onCancel(): void {

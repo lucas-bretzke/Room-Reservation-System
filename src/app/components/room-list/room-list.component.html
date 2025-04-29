@@ -1,0 +1,41 @@
+<section class="container">
+  <div class="container__header">
+    <div class="container__header_title">
+      <h1>Lista de Salas</h1>
+      <h2>Gerencie suas salas de reunião</h2>
+    </div>
+    <div class="container__header_commands">
+      <button class="btn btn-primary" routerLink="/room-registration">Nova Sala</button>
+    </div>
+  </div>
+
+  <div class="container__body">
+    <div *ngIf="loading" class="loading">
+      <p>Carregando salas...</p>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && rooms.length === 0" class="empty-state">
+      <p>Nenhuma sala cadastrada.</p>
+      <button class="btn btn-primary" routerLink="/room-registration">Cadastrar Primeira Sala</button>
+    </div>
+
+    <div class="room-grid">
+      <app-room
+        *ngFor="let room of rooms"
+        [id]="room.id"
+        [name]="room.name"
+        [capacity]="room.capacity"
+        [location]="room.location"
+      >
+        <div class="card__actions">
+          <button class="btn btn-primary" [routerLink]="['/room-registration', room.id]">Editar</button>
+          <button class="btn btn-secondary" (click)="deleteRoom(room.id)">Excluir</button>
+        </div>
+      </app-room>
+    </div>
+  </div>
+</section> 

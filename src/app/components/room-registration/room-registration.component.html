@@ -10,6 +10,10 @@
   </div>
   
   <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="registration-form">
+    <div *ngIf="isLoading" class="loading">
+      <p>Carregando dados da sala...</p>
+    </div>
+
     <div class="form-group">
       <label for="name">Nome da Sala</label>
       <input 
@@ -59,8 +63,23 @@
     </div>
 
     <div class="form-actions">
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
-      <button type="submit" class="btn btn-primary" [disabled]="!roomForm.valid">Salvar</button>
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="onCancel()"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Cancelar</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="!roomForm.valid || isLoading"
+      >
+        <span *ngIf="!isLoading">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
     </div>
   </form>
 </div> 
