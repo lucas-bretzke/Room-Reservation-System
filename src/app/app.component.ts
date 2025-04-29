@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ContainerComponent } from "./components/container/container.component";
 import { NavComponent } from './components/nav/nav.component';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -14,4 +14,11 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'room-reservation';
+
+  constructor(private router: Router) {
+  }
+
+  navigateToReservation() {
+    this.router.navigate(['/reservation']);
+  }
 }

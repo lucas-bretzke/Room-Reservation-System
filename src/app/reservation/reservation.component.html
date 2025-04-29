@@ -1,0 +1,41 @@
+<h2>Agendar Reserva</h2>
+
+<form (ngSubmit)="checkAvailability()" #formAgendar="ngForm">
+  <label>Sala ID:
+    <input type="number" [(ngModel)]="reservation.roomId" name="roomId" required>
+  </label><br>
+
+  <label>Usuário ID:
+    <input type="number" [(ngModel)]="reservation.userId" name="userId" required>
+  </label><br>
+
+  <label>Data:
+    <input type="date" [(ngModel)]="reservation.date" name="date" required>
+  </label><br>
+
+  <label>Hora Início:
+    <input type="time" [(ngModel)]="reservation.startTime" name="startTime" required>
+  </label><br>
+
+  <label>Hora Fim:
+    <input type="time" [(ngModel)]="reservation.endTime" name="endTime" required>
+  </label><br>
+
+  <button type="submit">Verificar Disponibilidade</button>
+</form>
+
+<div *ngIf="isAvailable !== null">
+  <p *ngIf="isAvailable">✅ Sala disponível!</p>
+  <p *ngIf="!isAvailable">❌ Sala ocupada!</p>
+  <button *ngIf="isAvailable" (click)="makeReservation()">Agendar</button>
+</div>
+
+<h2>Cancelar Reserva</h2>
+
+<label>Reserva ID:
+  <input type="number" [(ngModel)]="cancelId" name="cancelId">
+</label>
+<button (click)="cancelReservation()">Cancelar Reserva</button>
+
+<p *ngIf="responseMessage">{{ responseMessage }}</p>
+
