@@ -189,6 +189,7 @@
   transition: opacity 0.2s ease;
 }
 
-.eye-icon:hover, .eye-icon.visible {
+.eye-icon:hover,
+.eye-icon.visible {
   opacity: 1;
 }

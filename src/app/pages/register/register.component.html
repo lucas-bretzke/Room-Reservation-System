@@ -76,13 +76,15 @@
             formControlName="password"
             placeholder="Digite sua senha"
           />
-          <button 
-            type="button" 
-            class="password-toggle-btn" 
+          <button
+            type="button"
+            class="password-toggle-btn"
             (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Esconder senha' : 'Mostrar senha'"
+            [attr.aria-label]="
+              showPassword ? 'Esconder senha' : 'Mostrar senha'
+            "
           >
-            <i class="eye-icon">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</i>
+            <i class="eye-icon">{{ showPassword ? "👁️" : "👁️‍🗨️" }}</i>
           </button>
         </div>
         <div
@@ -110,13 +112,15 @@
             formControlName="confirmPassword"
             placeholder="Confirme sua senha"
           />
-          <button 
-            type="button" 
-            class="password-toggle-btn" 
+          <button
+            type="button"
+            class="password-toggle-btn"
             (click)="toggleConfirmPasswordVisibility()"
-            [attr.aria-label]="showConfirmPassword ? 'Esconder senha' : 'Mostrar senha'"
+            [attr.aria-label]="
+              showConfirmPassword ? 'Esconder senha' : 'Mostrar senha'
+            "
           >
-            <i class="eye-icon">{{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}</i>
+            <i class="eye-icon">{{ showConfirmPassword ? "👁️" : "👁️‍🗨️" }}</i>
           </button>
         </div>
         <div
