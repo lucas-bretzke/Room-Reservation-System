@@ -48,12 +48,12 @@ export class LoginComponent {
         if (success) {
           this.router.navigate(['/dashboard']);
         } else {
-          this.errorMessage = 'Invalid email or password';
+          this.errorMessage = 'Email ou senha inválidos';
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'An error occurred. Please try again.';
+        this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
         console.error(err);
       },
     });

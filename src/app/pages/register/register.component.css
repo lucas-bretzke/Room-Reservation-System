@@ -1,117 +1,164 @@
 .register-container {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 20px;
+  max-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+  justify-content: space-around;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 500px;
+}
+
+.header-section h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.description {
+  color: #34495e;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .form-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
   width: 100%;
-  max-width: 450px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  transition: transform 0.3s ease;
 }
 
-h1 {
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 24px;
-  text-align: center;
+.form-card:hover {
+  transform: translateY(-5px);
 }
 
-h2 {
-  color: #555;
-  margin-bottom: 20px;
-  font-size: 20px;
+.form-card h2 {
+  color: #2c3e50;
   text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
-label {
+.form-group label {
   display: block;
-  margin-bottom: 6px;
-  color: #555;
+  margin-bottom: 0.5rem;
+  color: #34495e;
   font-weight: 500;
 }
 
-input {
+.form-group input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border 0.3s;
-  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9fafc;
 }
 
-input:focus {
-  border-color: #4a90e2;
+.form-group input:focus {
   outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.validation-error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.error-message {
+  background-color: #fdedec;
+  color: #c0392b;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.success-message {
+  background-color: #e9f7ef;
+  color: #27ae60;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.error-message i,
+.success-message i {
+  margin-right: 8px;
 }
 
 .btn-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: #4a90e2;
+  background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 8px;
+  padding: 14px;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: #3a7bc8;
+.btn-primary:hover:not([disabled]) {
+  background-color: #2980b9;
 }
 
 .btn-primary:disabled {
-  background-color: #cccccc;
+  background-color: #bdc3c7;
   cursor: not-allowed;
 }
 
 .form-footer {
-  margin-top: 20px;
   text-align: center;
+  margin-top: 1.5rem;
+  color: #7f8c8d;
 }
 
 .form-footer a {
-  color: #4a90e2;
+  color: #3498db;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .form-footer a:hover {
+  color: #2980b9;
   text-decoration: underline;
 }
 
-.error-message {
-  background-color: #ffebee;
-  color: #d32f2f;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
-}
+/* Responsividade */
+@media (max-width: 600px) {
+  .form-card {
+    padding: 1.5rem;
+  }
 
-.success-message {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
-}
+  .header-section h1 {
+    font-size: 2rem;
+  }
 
-.validation-error {
-  color: #d32f2f;
-  font-size: 14px;
-  margin-top: 5px;
+  .description {
+    font-size: 1rem;
+  }
 }

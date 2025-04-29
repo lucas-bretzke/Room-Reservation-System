@@ -66,18 +66,18 @@ export class RegisterComponent {
         this.isLoading = false;
         if (success) {
           this.successMessage =
-            'Registration successful! Redirecting to login...';
+            'Registro realizado com sucesso! Redirecionando para o login...';
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
         } else {
           this.errorMessage =
-            'Email already registered. Please use a different email.';
+            'Email já registrado. Por favor, use um email diferente.';
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'An error occurred. Please try again.';
+        this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
         console.error(err);
       },
     });

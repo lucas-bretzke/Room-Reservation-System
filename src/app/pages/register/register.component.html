@@ -1,7 +1,14 @@
 <div class="register-container">
+  <div>
+    <h1>Sistema de reserva de quartos</h1>
+    <p class="description">
+      Gerencie reservas de quartos de forma eficiente com nossa plataforma fácil
+      de usar. Registre-se para começar a reservar salas para suas reuniões e
+      eventos.
+    </p>
+  </div>
   <div class="form-card">
-    <h1>Room Reservation System</h1>
-    <h2>Create Account</h2>
+    <h2>Crie sua conta</h2>
 
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
@@ -13,12 +20,12 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">Nome</label>
         <input
           type="text"
           id="name"
           formControlName="name"
-          placeholder="Enter your name"
+          placeholder="Digite seu nome"
         />
         <div
           class="validation-error"
@@ -28,10 +35,10 @@
           "
         >
           <span *ngIf="registerForm.get('name')?.errors?.['required']"
-            >Name is required</span
+            >Nome é obrigatório</span
           >
           <span *ngIf="registerForm.get('name')?.errors?.['minlength']"
-            >Name must be at least 2 characters long</span
+            >O nome deve ter pelo menos 2 caracteres</span
           >
         </div>
       </div>
@@ -42,7 +49,7 @@
           type="email"
           id="email"
           formControlName="email"
-          placeholder="Enter your email"
+          placeholder="Digite seu email"
         />
         <div
           class="validation-error"
@@ -52,21 +59,21 @@
           "
         >
           <span *ngIf="registerForm.get('email')?.errors?.['required']"
-            >Email is required</span
+            >Email é obrigatório</span
           >
           <span *ngIf="registerForm.get('email')?.errors?.['email']"
-            >Please enter a valid email</span
+            >Por favor, insira um email válido</span
           >
         </div>
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Senha</label>
         <input
           type="password"
           id="password"
           formControlName="password"
-          placeholder="Enter your password"
+          placeholder="Digite sua senha"
         />
         <div
           class="validation-error"
@@ -76,21 +83,21 @@
           "
         >
           <span *ngIf="registerForm.get('password')?.errors?.['required']"
-            >Password is required</span
+            >Senha é obrigatória</span
           >
           <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
-            >Password must be at least 6 characters long</span
+            >A senha deve ter pelo menos 6 caracteres</span
           >
         </div>
       </div>
 
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="confirmPassword">Confirmar Senha</label>
         <input
           type="password"
           id="confirmPassword"
           formControlName="confirmPassword"
-          placeholder="Confirm your password"
+          placeholder="Confirme sua senha"
         />
         <div
           class="validation-error"
@@ -101,11 +108,11 @@
         >
           <span
             *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
-            >Confirm Password is required</span
+            >Confirmar senha é obrigatório</span
           >
           <span
             *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']"
-            >Passwords do not match</span
+            >As senhas não coincidem</span
           >
         </div>
       </div>
@@ -115,15 +122,15 @@
         class="btn-primary"
         [disabled]="registerForm.invalid || isLoading"
       >
-        <span *ngIf="isLoading">Loading...</span>
-        <span *ngIf="!isLoading">Register</span>
+        <span *ngIf="isLoading">Carregando...</span>
+        <span *ngIf="!isLoading">Registrar</span>
       </button>
     </form>
 
     <div class="form-footer">
       <p>
-        Already have an account?
-        <a href="javascript:void(0)" (click)="navigateToLogin()">Login here</a>
+        Já possui uma conta?
+        <a href="javascript:void(0)" (click)="navigateToLogin()">Entre aqui</a>
       </p>
     </div>
   </div>

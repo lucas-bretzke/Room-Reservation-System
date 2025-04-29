@@ -10,7 +10,7 @@ export class AuthService {
   private users: any[] = [];
 
   constructor() {
-    // Check if there are any stored users in localStorage
+    // Verificar se existem usuários armazenados no localStorage
     const storedUsers = localStorage.getItem('users');
     if (storedUsers) {
       this.users = JSON.parse(storedUsers);
@@ -18,23 +18,23 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    // Simulate API call
+    // Simular chamada de API
     return of(this.checkCredentials(email, password)).pipe(delay(800));
   }
 
   register(name: string, email: string, password: string): Observable<boolean> {
-    // Check if user already exists
-    const userExists = this.users.some((user) => user.email === email);
+    // Verificar se o email já está em uso
+    const emailExists = this.users.some((user) => user.email === email);
 
-    if (userExists) {
+    if (emailExists) {
       return of(false).pipe(delay(800));
     }
 
-    // Add new user
+    // Adicionar novo usuário
     const newUser = { name, email, password };
     this.users.push(newUser);
 
-    // Save to localStorage
+    // Salvar usuários no localStorage
     localStorage.setItem('users', JSON.stringify(this.users));
 
     return of(true).pipe(delay(800));

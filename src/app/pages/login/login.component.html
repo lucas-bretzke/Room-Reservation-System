@@ -1,6 +1,5 @@
 <div class="login-container">
   <div class="form-card">
-    <h1>Room Reservation System</h1>
     <h2>Login</h2>
 
     <div *ngIf="errorMessage" class="error-message">
@@ -14,7 +13,7 @@
           type="email"
           id="email"
           formControlName="email"
-          placeholder="Enter your email"
+          placeholder="Digite seu email"
         />
         <div
           class="validation-error"
@@ -23,21 +22,21 @@
           "
         >
           <span *ngIf="loginForm.get('email')?.errors?.['required']"
-            >Email is required</span
+            >Email é obrigatório</span
           >
           <span *ngIf="loginForm.get('email')?.errors?.['email']"
-            >Please enter a valid email</span
+            >Por favor, insira um email válido</span
           >
         </div>
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Senha</label>
         <input
           type="password"
           id="password"
           formControlName="password"
-          placeholder="Enter your password"
+          placeholder="Digite sua senha"
         />
         <div
           class="validation-error"
@@ -47,10 +46,10 @@
           "
         >
           <span *ngIf="loginForm.get('password')?.errors?.['required']"
-            >Password is required</span
+            >Senha é obrigatória</span
           >
           <span *ngIf="loginForm.get('password')?.errors?.['minlength']"
-            >Password must be at least 6 characters long</span
+            >A senha deve ter pelo menos 6 caracteres</span
           >
         </div>
       </div>
@@ -60,16 +59,16 @@
         class="btn-primary"
         [disabled]="loginForm.invalid || isLoading"
       >
-        <span *ngIf="isLoading">Loading...</span>
-        <span *ngIf="!isLoading">Login</span>
+        <span *ngIf="isLoading">Carregando...</span>
+        <span *ngIf="!isLoading">Entrar</span>
       </button>
     </form>
 
     <div class="form-footer">
       <p>
-        Don't have an account?
+        Não tem uma conta?
         <a href="javascript:void(0)" (click)="navigateToRegister()"
-          >Register here</a
+          >Registre-se aqui</a
         >
       </p>
     </div>
