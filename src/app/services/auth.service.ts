@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
@@ -19,6 +19,13 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private readonly TOKEN_NAME = 'auth_token';
 
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    withCredentials: false,
+  };
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.checkToken();
   }
@@ -28,8 +35,6 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-
-        // Check if token is expired
         const isExpired = decodedToken.exp * 1000 < Date.now();
 
         if (!isExpired) {
@@ -52,13 +57,12 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}/login`, { email, password })
+      .post<any>(`${this.apiUrl}/login`, { email, password }, this.httpOptions)
       .pipe(
         tap((response) => {
           if (response && response.token) {
-            // Set secure cookie that expires in 24 hours (matching token expiration)
             const expiresIn = new Date();
-            expiresIn.setDate(expiresIn.getDate() + 1); // 24 hours from now
+            expiresIn.setDate(expiresIn.getDate() + 1);
 
             this.cookieService.set(
               this.TOKEN_NAME,
@@ -66,8 +70,8 @@ export class AuthService {
               expiresIn,
               '/',
               undefined,
-              true, // secure flag
-              'Strict' // sameSite policy
+              true,
+              'Strict'
             );
 
             const decodedToken: any = jwtDecode(response.token);
@@ -86,10 +90,19 @@ export class AuthService {
   }
 
   register(name: string, email: string, password: string): Observable<any> {
+    console.log(`Making registration request to: ${this.apiUrl}/register`);
+    console.log('Request payload:', { name, email, password });
+
     return this.http
-      .post<any>(`${this.apiUrl}/register`, { name, email, password })
+      .post<any>(
+        `${this.apiUrl}/register`,
+        { name, email, password },
+        this.httpOptions
+      )
       .pipe(
+        tap((response) => console.log('Registration successful', response)),
         catchError((err) => {
+          console.error('Registration error details:', err);
           return throwError(() => err);
         })
       );

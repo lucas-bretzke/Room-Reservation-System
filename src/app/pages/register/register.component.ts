@@ -39,7 +39,6 @@ export class RegisterComponent {
       { validators: this.passwordMatchValidator }
     );
 
-    // Redirect if already logged in
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
     }
