@@ -32,12 +32,22 @@
 
       <div class="form-group">
         <label for="password">Senha</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Digite sua senha"
-        />
+        <div class="password-input-container">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Digite sua senha"
+          />
+          <button 
+            type="button" 
+            class="password-toggle-btn" 
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Esconder senha' : 'Mostrar senha'"
+          >
+            <i class="eye-icon">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</i>
+          </button>
+        </div>
         <div
           class="validation-error"
           *ngIf="

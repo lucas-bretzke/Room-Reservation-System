@@ -21,6 +21,8 @@ export class RegisterComponent {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -89,5 +91,13 @@ export class RegisterComponent {
 
   navigateToLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

@@ -15,7 +15,7 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5133/api/auth';
+  private apiUrl = 'http://localhost:7163/api/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private readonly TOKEN_NAME = 'auth_token';
 

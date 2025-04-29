@@ -20,6 +20,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -66,5 +67,9 @@ export class LoginComponent {
 
   navigateToRegister(): void {
     this.router.navigate(['/register']);
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

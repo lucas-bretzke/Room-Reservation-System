@@ -56,6 +56,36 @@ input:focus {
   outline: none;
 }
 
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon {
+  font-size: 1.2rem;
+  color: #555;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.eye-icon:hover, .eye-icon.visible {
+  opacity: 1;
+}
+
 .btn-primary {
   width: 100%;
   padding: 12px;
