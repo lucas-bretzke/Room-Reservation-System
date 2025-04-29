@@ -36,6 +36,11 @@ export class RegisterComponent {
       },
       { validators: this.passwordMatchValidator }
     );
+
+    // Redirect if already logged in
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -62,22 +67,21 @@ export class RegisterComponent {
     const { name, email, password } = this.registerForm.value;
 
     this.authService.register(name, email, password).subscribe({
-      next: (success) => {
+      next: (response) => {
         this.isLoading = false;
-        if (success) {
-          this.successMessage =
-            'Registro realizado com sucesso! Redirecionando para o login...';
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
-        } else {
-          this.errorMessage =
-            'Email já registrado. Por favor, use um email diferente.';
-        }
+        this.successMessage =
+          'Registro realizado com sucesso! Redirecionando para o login...';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
+        if (err.error && err.error.message) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
+        }
         console.error(err);
       },
     });

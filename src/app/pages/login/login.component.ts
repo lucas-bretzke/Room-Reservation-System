@@ -30,6 +30,11 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    // Redirect if already logged in
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   onSubmit(): void {
@@ -43,17 +48,17 @@ export class LoginComponent {
     const { email, password } = this.loginForm.value;
 
     this.authService.login(email, password).subscribe({
-      next: (success) => {
+      next: (response) => {
         this.isLoading = false;
-        if (success) {
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.errorMessage = 'Email ou senha inválidos';
-        }
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
+        if (err.error && err.error.message) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = 'Ocorreu um erro. Por favor, tente novamente.';
+        }
         console.error(err);
       },
     });
