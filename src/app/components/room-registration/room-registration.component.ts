@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RoomService, RoomRequest } from '../../services/room/room.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { RoomService } from '../../services/room.service';
+import { Room } from '../../models/room.model';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-room-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './room-registration.component.html',
   styleUrl: './room-registration.component.css'
 })
@@ -18,17 +19,18 @@ export class RoomRegistrationComponent implements OnInit {
   errorMessage = '';
   successMessage = '';
   isLoading = false;
+  isSubmitting = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private roomService: RoomService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.roomForm = this.formBuilder.group({
+    this.roomForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       capacity: ['', [Validators.required, Validators.min(1)]],
-      location: ['', [Validators.required]]
+      location: ['', Validators.required]
     });
   }
 
@@ -43,55 +45,51 @@ export class RoomRegistrationComponent implements OnInit {
   }
 
   loadRoomData(): void {
-    this.isLoading = true;
-    this.roomService.getRooms().subscribe({
-      next: (rooms) => {
-        const room = rooms.find(r => r.id === this.roomId);
-        if (room) {
+    if (this.roomId) {
+      this.isLoading = true;
+      this.roomService.getRoom(this.roomId).subscribe({
+        next: (room: Room) => {
           this.roomForm.patchValue({
             name: room.name,
             capacity: room.capacity.toString(),
             location: room.location
           });
-        } else {
-          this.errorMessage = 'Sala não encontrada';
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.errorMessage = 'Erro ao carregar dados da sala';
+          this.isLoading = false;
         }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.errorMessage = error.error?.message || 'Erro ao carregar dados da sala';
-        this.isLoading = false;
-      }
-    });
+      });
+    }
   }
 
   onSubmit(): void {
-    if (this.isLoading || this.roomForm.invalid) return;
-    
-    this.errorMessage = '';
-    this.successMessage = '';
+    if (this.roomForm.invalid || this.isSubmitting || this.isLoading) {
+      return;
+    }
+
+    this.isSubmitting = true;
     this.isLoading = true;
-    
-    const formValue = this.roomForm.value;
-    const roomData: RoomRequest = {
-      id: this.isEditMode ? this.roomId!.toString() : '0',
-      name: formValue.name,
-      capacity: formValue.capacity.toString(),
-      location: formValue.location
+    const roomData: Room = {
+      ...this.roomForm.value,
+      capacity: parseInt(this.roomForm.value.capacity, 10),
+      status: 'available'
     };
 
-    const request = this.isEditMode
-      ? this.roomService.update(this.roomId!, roomData)
-      : this.roomService.create(roomData);
+    const request = this.isEditMode && this.roomId
+      ? this.roomService.updateRoom(this.roomId, roomData)
+      : this.roomService.createRoom(roomData);
 
     request.subscribe({
       next: () => {
-        this.successMessage = this.isEditMode ? 'Sala atualizada!' : 'Sala cadastrada!';
+        this.router.navigate(['/rooms']);
+        this.isSubmitting = false;
         this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/rooms']), 2000);
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'Erro ao processar solicitação';
+        this.errorMessage = 'Erro ao salvar sala';
+        this.isSubmitting = false;
         this.isLoading = false;
       }
     });

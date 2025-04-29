@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RoomService } from '../../services/room.service';
+import { Room } from '../../models/room.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { RoomService } from '../../services/room/room.service';
-import { Room } from '../../models/room.model';
 import { RoomComponent } from '../room/room.component';
 
 @Component({
@@ -10,12 +10,12 @@ import { RoomComponent } from '../room/room.component';
   standalone: true,
   imports: [CommonModule, RouterModule, RoomComponent],
   templateUrl: './room-list.component.html',
-  styleUrls: ['./room-list.component.css']
+  styleUrl: './room-list.component.css'
 })
 export class RoomListComponent implements OnInit {
   rooms: Room[] = [];
-  loading = true;
-  error: string | null = null;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
   constructor(private roomService: RoomService) {}
 
@@ -24,27 +24,37 @@ export class RoomListComponent implements OnInit {
   }
 
   loadRooms(): void {
-    this.loading = true;
-    this.error = null;
-    
+    this.isLoading = true;
+    this.errorMessage = '';
+
     this.roomService.getRooms().subscribe({
       next: (rooms) => {
         this.rooms = rooms;
-        this.loading = false;
+        this.isLoading = false;
       },
       error: (error) => {
-        this.error = error.error?.message || 'Erro ao carregar as salas';
-        this.loading = false;
+        this.errorMessage = 'Erro ao carregar salas. Por favor, tente novamente.';
+        this.isLoading = false;
       }
     });
   }
 
-  deleteRoom(id: number): void {
+  deleteRoom(id: number | undefined): void {
+    if (!id) {
+      this.errorMessage = 'ID da sala inválido';
+      return;
+    }
+
     if (confirm('Tem certeza que deseja excluir esta sala?')) {
+      this.isLoading = true;
       this.roomService.deleteRoom(id).subscribe({
-        next: () => this.loadRooms(),
+        next: () => {
+          this.rooms = this.rooms.filter(room => room.id !== id);
+          this.isLoading = false;
+        },
         error: (error) => {
-          this.error = error.error?.message || 'Erro ao excluir a sala';
+          this.errorMessage = 'Erro ao excluir sala. Por favor, tente novamente.';
+          this.isLoading = false;
         }
       });
     }

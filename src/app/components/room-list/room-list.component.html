@@ -5,37 +5,49 @@
       <h2>Gerencie suas salas de reunião</h2>
     </div>
     <div class="container__header_commands">
-      <button class="btn btn-primary" routerLink="/room-registration">Nova Sala</button>
+      <button class="btn btn-primary" routerLink="/register-room">Nova Sala</button>
     </div>
   </div>
 
   <div class="container__body">
-    <div *ngIf="loading" class="loading">
+    <div *ngIf="isLoading" class="loading">
       <p>Carregando salas...</p>
     </div>
 
-    <div *ngIf="error" class="alert alert-danger">
-      {{ error }}
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
     </div>
 
-    <div *ngIf="!loading && !error && rooms.length === 0" class="empty-state">
+    <div *ngIf="!isLoading && !errorMessage && rooms.length === 0" class="empty-state">
       <p>Nenhuma sala cadastrada.</p>
-      <button class="btn btn-primary" routerLink="/room-registration">Cadastrar Primeira Sala</button>
+      <button class="btn btn-primary" routerLink="/register-room">Cadastrar Primeira Sala</button>
     </div>
 
     <div class="room-grid">
-      <app-room
-        *ngFor="let room of rooms"
-        [id]="room.id"
-        [name]="room.name"
-        [capacity]="room.capacity"
-        [location]="room.location"
-      >
-        <div class="card__actions">
-          <button class="btn btn-primary" [routerLink]="['/room-registration', room.id]">Editar</button>
-          <button class="btn btn-secondary" (click)="deleteRoom(room.id)">Excluir</button>
+      <div *ngFor="let room of rooms" class="room-card">
+        <div class="room-card__content">
+          <h3>{{ room.name }}</h3>
+          <p>Capacidade: {{ room.capacity }} pessoas</p>
+          <p>Local: {{ room.location }}</p>
+          <p>Status: {{ room.status }}</p>
         </div>
-      </app-room>
+        <div class="room-card__actions">
+          <button 
+            *ngIf="room.id" 
+            class="btn btn-primary" 
+            [routerLink]="['/register-room', room.id]"
+          >
+            Editar
+          </button>
+          <button 
+            *ngIf="room.id" 
+            class="btn btn-secondary" 
+            (click)="deleteRoom(room.id)"
+          >
+            Excluir
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section> 

@@ -19,6 +19,6 @@ export class AppComponent {
   }
 
   navigateToReservation() {
-    this.router.navigate(['/reservation']);
+    this.router.navigate(['/reservations']);
   }
 }

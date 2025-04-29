@@ -1,0 +1,83 @@
+<div class="reservation-container">
+  <h1>Reservar Sala</h1>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  
+  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="reservation-form">
+    <div *ngIf="isLoading" class="loading">
+      <p>Carregando dados...</p>
+    </div>
+
+    <div class="form-group">
+      <label for="roomId">Sala</label>
+      <select 
+        id="roomId" 
+        formControlName="roomId"
+        class="form-control"
+        [class.is-invalid]="reservationForm.get('roomId')?.errors && reservationForm.get('roomId')?.touched"
+      >
+        <option value="">Selecione uma sala</option>
+        <option *ngFor="let room of rooms" [value]="room.id">
+          {{ room.name }} - Capacidade: {{ room.capacity }} - Local: {{ room.location }}
+        </option>
+      </select>
+      <div *ngIf="reservationForm.get('roomId')?.errors?.['required'] && reservationForm.get('roomId')?.touched" class="invalid-feedback">
+        Seleção da sala é obrigatória
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="checkInDate">Data e Hora de Entrada</label>
+      <input 
+        type="datetime-local" 
+        id="checkInDate" 
+        formControlName="checkInDate"
+        class="form-control"
+        [class.is-invalid]="reservationForm.get('checkInDate')?.errors && reservationForm.get('checkInDate')?.touched"
+      >
+      <div *ngIf="reservationForm.get('checkInDate')?.errors?.['required'] && reservationForm.get('checkInDate')?.touched" class="invalid-feedback">
+        Data e hora de entrada são obrigatórias
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="checkOutDate">Data e Hora de Saída</label>
+      <input 
+        type="datetime-local" 
+        id="checkOutDate" 
+        formControlName="checkOutDate"
+        class="form-control"
+        [class.is-invalid]="reservationForm.get('checkOutDate')?.errors && reservationForm.get('checkOutDate')?.touched"
+      >
+      <div *ngIf="reservationForm.get('checkOutDate')?.errors?.['required'] && reservationForm.get('checkOutDate')?.touched" class="invalid-feedback">
+        Data e hora de saída são obrigatórias
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="onCancel()"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Cancelar</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="!reservationForm.valid || isLoading"
+      >
+        <span *ngIf="!isLoading">Reservar</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+  </form>
+</div> 

@@ -21,7 +21,7 @@
         id="name" 
         formControlName="name"
         class="form-control"
-        [ngClass]="{'is-invalid': formControls['name'].errors && formControls['name'].touched}"
+        [class.is-invalid]="formControls['name'].errors && formControls['name'].touched"
       >
       <div *ngIf="formControls['name'].errors?.['required'] && formControls['name'].touched" class="invalid-feedback">
         Nome da sala é obrigatório
@@ -38,7 +38,7 @@
         id="capacity" 
         formControlName="capacity"
         class="form-control"
-        [ngClass]="{'is-invalid': formControls['capacity'].errors && formControls['capacity'].touched}"
+        [class.is-invalid]="formControls['capacity'].errors && formControls['capacity'].touched"
       >
       <div *ngIf="formControls['capacity'].errors?.['required'] && formControls['capacity'].touched" class="invalid-feedback">
         Capacidade é obrigatória
@@ -55,30 +55,29 @@
         id="location" 
         formControlName="location"
         class="form-control"
-        [ngClass]="{'is-invalid': formControls['location'].errors && formControls['location'].touched}"
+        [class.is-invalid]="formControls['location'].errors && formControls['location'].touched"
       >
       <div *ngIf="formControls['location'].errors?.['required'] && formControls['location'].touched" class="invalid-feedback">
         Localização é obrigatória
       </div>
     </div>
 
-    <div class="form-actions">
+    <div class="form-actions" style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
       <button 
         type="button" 
         class="btn btn-secondary" 
         (click)="onCancel()"
         [disabled]="isLoading"
       >
-        <span *ngIf="!isLoading">Cancelar</span>
-        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Cancelar
       </button>
       <button 
         type="submit" 
         class="btn btn-primary"
         [disabled]="!roomForm.valid || isLoading"
       >
-        <span *ngIf="!isLoading">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</span>
-        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ isEditMode ? 'Atualizar' : 'Cadastrar' }}
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: 8px;"></span>
       </button>
     </div>
   </form>
