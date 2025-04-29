@@ -1,0 +1,66 @@
+<div class="registration-container">
+  <h1>{{ isEditMode ? 'Editar Sala' : 'Cadastrar Nova Sala' }}</h1>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  
+  <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="registration-form">
+    <div class="form-group">
+      <label for="name">Nome da Sala</label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name"
+        class="form-control"
+        [ngClass]="{'is-invalid': formControls['name'].errors && formControls['name'].touched}"
+      >
+      <div *ngIf="formControls['name'].errors?.['required'] && formControls['name'].touched" class="invalid-feedback">
+        Nome da sala é obrigatório
+      </div>
+      <div *ngIf="formControls['name'].errors?.['minlength'] && formControls['name'].touched" class="invalid-feedback">
+        Nome deve ter pelo menos 3 caracteres
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="capacity">Capacidade</label>
+      <input 
+        type="number" 
+        id="capacity" 
+        formControlName="capacity"
+        class="form-control"
+        [ngClass]="{'is-invalid': formControls['capacity'].errors && formControls['capacity'].touched}"
+      >
+      <div *ngIf="formControls['capacity'].errors?.['required'] && formControls['capacity'].touched" class="invalid-feedback">
+        Capacidade é obrigatória
+      </div>
+      <div *ngIf="formControls['capacity'].errors?.['min'] && formControls['capacity'].touched" class="invalid-feedback">
+        Capacidade deve ser maior que 0
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Localização</label>
+      <input 
+        type="text" 
+        id="location" 
+        formControlName="location"
+        class="form-control"
+        [ngClass]="{'is-invalid': formControls['location'].errors && formControls['location'].touched}"
+      >
+      <div *ngIf="formControls['location'].errors?.['required'] && formControls['location'].touched" class="invalid-feedback">
+        Localização é obrigatória
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!roomForm.valid">Salvar</button>
+    </div>
+  </form>
+</div> 

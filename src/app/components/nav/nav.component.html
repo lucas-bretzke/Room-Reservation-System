@@ -1,0 +1,24 @@
+<nav>
+    <div class="nav__left">
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <span class="logo"><a routerLink="/home">{{nomeProjeto}}</a></span>
+    </div>
+    <div class="nav__right">
+        <span class="logout">
+            <button>Sair</button>
+        </span>
+    </div>
+</nav>
+
+<div class="sidebar" [class.active]="isMenuOpen">
+    <div class="sidebar__content">
+        <a routerLink="/rooms" class="sidebar__item" (click)="toggleMenu()">Salas</a>
+        <a routerLink="/room-registration" class="sidebar__item" (click)="toggleMenu()">Cadastrar Sala</a>
+    </div>
+</div>
+
+<div class="overlay" [class.active]="isMenuOpen" (click)="toggleMenu()"></div>
