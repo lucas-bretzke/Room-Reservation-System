@@ -1,0 +1,161 @@
+<div class="register-container">
+  <div>
+    <h1>Sistema de reserva de quartos</h1>
+    <p class="description">
+      Gerencie reservas de quartos de forma eficiente com nossa plataforma fácil
+      de usar. Registre-se para começar a reservar salas para suas reuniões e
+      eventos.
+    </p>
+  </div>
+  <div class="form-card">
+    <h2>Crie sua conta</h2>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Digite seu nome"
+        />
+        <div
+          class="validation-error"
+          *ngIf="
+            registerForm.get('name')?.invalid &&
+            registerForm.get('name')?.touched
+          "
+        >
+          <span *ngIf="registerForm.get('name')?.errors?.['required']"
+            >Nome é obrigatório</span
+          >
+          <span *ngIf="registerForm.get('name')?.errors?.['minlength']"
+            >O nome deve ter pelo menos 2 caracteres</span
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Digite seu email"
+        />
+        <div
+          class="validation-error"
+          *ngIf="
+            registerForm.get('email')?.invalid &&
+            registerForm.get('email')?.touched
+          "
+        >
+          <span *ngIf="registerForm.get('email')?.errors?.['required']"
+            >Email é obrigatório</span
+          >
+          <span *ngIf="registerForm.get('email')?.errors?.['email']"
+            >Por favor, insira um email válido</span
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <div class="password-input-container">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Digite sua senha"
+          />
+          <button
+            type="button"
+            class="password-toggle-btn"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="
+              showPassword ? 'Esconder senha' : 'Mostrar senha'
+            "
+          >
+            <i class="eye-icon">{{ showPassword ? "👁️" : "👁️‍🗨️" }}</i>
+          </button>
+        </div>
+        <div
+          class="validation-error"
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            registerForm.get('password')?.touched
+          "
+        >
+          <span *ngIf="registerForm.get('password')?.errors?.['required']"
+            >Senha é obrigatória</span
+          >
+          <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
+            >A senha deve ter pelo menos 6 caracteres</span
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha</label>
+        <div class="password-input-container">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirme sua senha"
+          />
+          <button
+            type="button"
+            class="password-toggle-btn"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="
+              showConfirmPassword ? 'Esconder senha' : 'Mostrar senha'
+            "
+          >
+            <i class="eye-icon">{{ showConfirmPassword ? "👁️" : "👁️‍🗨️" }}</i>
+          </button>
+        </div>
+        <div
+          class="validation-error"
+          *ngIf="
+            registerForm.get('confirmPassword')?.invalid &&
+            registerForm.get('confirmPassword')?.touched
+          "
+        >
+          <span
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+            >Confirmar senha é obrigatório</span
+          >
+          <span
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+            >As senhas não coincidem</span
+          >
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="registerForm.invalid || isLoading"
+      >
+        <span *ngIf="isLoading">Carregando...</span>
+        <span *ngIf="!isLoading">Registrar</span>
+      </button>
+    </form>
+
+    <div class="form-footer">
+      <p>
+        Já possui uma conta?
+        <a href="javascript:void(0)" (click)="navigateToLogin()">Entre aqui</a>
+      </p>
+    </div>
+  </div>
+</div>
